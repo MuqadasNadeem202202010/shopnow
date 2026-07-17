@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import emailjs from '@emailjs/browser';
+import axios from 'axios';
 
 function Checkout({ cart, setCart }) {
   const [name, setName] = useState('');
@@ -14,29 +14,13 @@ function Checkout({ cart, setCart }) {
   const handleOrder = async (e) => {
     e.preventDefault();
     setLoading(true);
-
-    const itemsList = cart.map(item => `${item.name} | Size: ${item.size} | Rs. ${item.price.toLocaleString()}`).join('\n');
-
-    const templateParams = {
-      name: name,
-      phone: phone,
-      city: city,
-      address: address,
-      items: itemsList,
-      total: totalPrice.toLocaleString()
-    };
-
     try {
-      await emailjs.send(
-        'service_6oldbfh',
-        'template_ygwwkak',
-        templateParams,
-        'HuusNYfFPaZyxGIhI'
-      );
+      await axios.post('https://shopnow-6wvw.vercel.app/api/order/place', {
+        name, phone, city, address, cart, total: totalPrice
+      });
       setSuccess(true);
       setCart([]);
     } catch (error) {
-      console.log('Email error:', error);
       alert('Something went wrong! Try again.');
     }
     setLoading(false);
