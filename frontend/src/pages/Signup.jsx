@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import emailjs from '@emailjs/browser';
 
 function Signup() {
   const [name, setName] = useState('');
@@ -20,18 +19,6 @@ function Signup() {
       await axios.post('https://shopnow-backend.netlify.app/api/auth/signup', {
         name, email, password
       });
-
-      await emailjs.send(
-        'service_6oldbfh',
-        'template_fdzlwuk',
-        {
-          name: name,
-          email: email,
-          time: new Date().toLocaleString()
-        },
-        'HuusNYfFPaZyxGIhI'
-      );
-
       setSuccess('Account created successfully! Redirecting to login...');
       setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
