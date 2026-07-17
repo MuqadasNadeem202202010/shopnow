@@ -7,14 +7,20 @@ const jwt = require('jsonwebtoken');
 
 const app = express();
 
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
+app.use(cors({ origin: '*', methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], allowedHeaders: ['Content-Type', 'Authorization'] }));
 app.options('*', cors());
 app.use(express.json());
+
+let isConnected = false;
+
+const connectDB = async () => {
+  if (isConnected) return;
+  await mongoose.connect(process.env.MONGO_URI, {
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000,
+  });
+  isConnected = true;
+};
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -24,10 +30,9 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 
-mongoose.connect(process.env.MONGO_URI);
-
 app.post('/api/auth/signup', async (req, res) => {
   try {
+    await connectDB();
     const { name, email, password } = req.body;
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: 'Email already exists!' });
@@ -36,12 +41,14 @@ app.post('/api/auth/signup', async (req, res) => {
     await user.save();
     res.status(201).json({ message: 'Account created successfully!' });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 });
 
 app.post('/api/auth/login', async (req, res) => {
   try {
+    await connectDB();
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: 'Email not found!' });
