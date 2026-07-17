@@ -15,7 +15,7 @@ function Login() {
     setLoading(true);
     setError('');
     try {
-      const res = await axios.post('https://shopnow-backend.netlify.app/api/auth/login', {
+      const res = await axios.post('https://shopnow-6wvw.vercel.app/api/auth/login', {
         email, password
       });
       localStorage.setItem('token', res.data.token);
@@ -43,32 +43,16 @@ function Login() {
         <form onSubmit={handleLogin}>
           <div style={{ marginBottom: '16px' }}>
             <label style={{ color: '#9ca3af', display: 'block', marginBottom: '8px' }}>Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-              style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #374151', background: '#1f2937', color: 'white', fontSize: '16px' }}
-            />
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" required
+              style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #374151', background: '#1f2937', color: 'white', fontSize: '16px' }} />
           </div>
           <div style={{ marginBottom: '24px' }}>
             <label style={{ color: '#9ca3af', display: 'block', marginBottom: '8px' }}>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-              style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #374151', background: '#1f2937', color: 'white', fontSize: '16px' }}
-            />
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password" required
+              style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #374151', background: '#1f2937', color: 'white', fontSize: '16px' }} />
           </div>
-          <button
-            type="submit"
-            className="btn-pink"
-            style={{ width: '100%', padding: '12px', fontSize: '16px' }}
-            disabled={loading}
-          >
+          <button type="submit" disabled={loading}
+            style={{ width: '100%', background: '#ec4899', color: 'white', padding: '12px', borderRadius: '999px', fontWeight: 'bold', border: 'none', cursor: 'pointer', fontSize: '16px' }}>
             {loading ? 'Logging in...' : 'Login'}
           </button>
           <p style={{ textAlign: 'center', marginTop: '16px', color: '#9ca3af' }}>

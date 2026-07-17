@@ -16,7 +16,7 @@ function Signup() {
     setLoading(true);
     setError('');
     try {
-      await axios.post('https://shopnow-backend.netlify.app/api/auth/signup', {
+      await axios.post('https://shopnow-6wvw.vercel.app/api/auth/signup', {
         name, email, password
       });
       setSuccess('Account created successfully! Redirecting to login...');
