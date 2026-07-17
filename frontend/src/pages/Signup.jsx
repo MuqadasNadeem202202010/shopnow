@@ -17,11 +17,10 @@ function Signup() {
     setLoading(true);
     setError('');
     try {
-      await axios.post('http://localhost:5000/api/auth/signup', {
+      await axios.post('https://shopnow-backend.netlify.app/api/auth/signup', {
         name, email, password
       });
 
-      // EmailJS se notification bhejo
       await emailjs.send(
         'service_6oldbfh',
         'template_fdzlwuk',
